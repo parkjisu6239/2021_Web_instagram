@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='d-flex'>
+  {% if person.profile_image %}
+    <img style='width:10rem;' class="rounded-circle me-5" src={{ person.profile_image.url }} alt="">
+  {% else %}
+    <img style='width:10rem;' class="rounded-circle mx-5" src='https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png' alt="">
+  {% endif %}
+  <div>
+    <div class='d-flex align-items-center mt-3 mb-2'>
+      <h2 class='me-2'>{{ person.username }}</h2> 
+      {% if user != person %}
+        <form action="{% url 'accounts:follow' person.pk %}" method='POST'>
+          {% csrf_token %}
+          {% if user in person.followers.all %}
+            <button class='btn btn-outline-primary btn-sm'>팔로잉</button>
+          {% else %}
+            <button class='btn btn-primary btn-sm'>팔로우</button>
+          {% endif %}
+        </form>
+      {% endif %} 
+    </div>
+    <div>
+      <ul class='d-flex align-items-center list-unstyled'>
+        <li class='me-5'>
+          게시물 <span class='fw-bold'>{{ person.article_set.all|length }}</span>
+        </li>
+        <li class='me-5'>
+          <button type="button" class="btn btn-none" data-bs-toggle="modal" data-bs-target="#followerModal">
+            팔로워 <span class='fw-bold'>{{ person.followers.all|length }}</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="btn btn-none" data-bs-toggle="modal" data-bs-target="#followingModal">
+            팔로잉 <span class='fw-bold'>{{ person.followings.all|length }}</span>
+          </button>
+        </li>
+      </ul>
+      <p class='m-0'><b>무야호~</b></p>
+      <p class='m-0'>그만큼 신나신다는거지</p>
+    </div>
+  </div>
+</div>
+<br>
+<hr>
+<div class="row row-cols-3 g-2">
+  {% for article in person.article_set.all %}
+    <div class="col">
+      <a href="{% url 'articles:detail' article.pk %}">
+        <div class="card">
+          <img src="{{ article.article_image.url }}" alt="">
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+{% comment %} 팔로워 모달 {% endcomment %}
+<div class="modal fade" id="followerModal" tabindex="-1" aria-labelledby="followerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="followerModalLabel">팔로워</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% for follower in person.followers.all %}
+          <div class='d-flex justify-content-between'>
+            <div>
+              {% if follower.profile_image %}
+                <img style='width:2rem;' class="rounded-circle" src={{ follower.profile_image.url }} alt="">
+              {% else %}
+                <img style='width:2rem;' class="rounded-circle" src='https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png' alt="">
+              {% endif %}
+              <span class='ms-2'>{{ follower }}</span>
+            </div>
+            <div>
+              {% if user != follower %}
+                <form action="{% url 'accounts:follow' follower.pk %}" method='POST'>
+                  {% csrf_token %}
+                  {% if user in follower.followers.all %}
+                    <button class='btn btn-outline-primary btn-sm'>팔로잉</button>
+                  {% else %}
+                    <button class='btn btn-primary btn-sm'>팔로우</button>
+                  {% endif %}
+                </form>
+              {% endif %} 
+            </div>
+          </div>
+          <br>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% comment %} 팔로잉 모달 {% endcomment %}
+<div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="followingModalLabel">팔로잉</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% for following in person.followings.all %}
+          <div class='d-flex justify-content-between'>
+            <div>
+              {% if following.profile_image %}
+                <img style='width:2rem;' class="rounded-circle" src={{ following.profile_image.url }} alt="">
+              {% else %}
+                <img style='width:2rem;' class="rounded-circle" src='https://www.worldfuturecouncil.org/wp-content/uploads/2020/06/blank-profile-picture-973460_1280-1.png' alt="">
+              {% endif %}
+              <span class='ms-2'>{{ following }}</span>
+            </div>
+            <div>
+              {% if user != following %}
+                <form action="{% url 'accounts:follow' following.pk %}" method='POST'>
+                  {% csrf_token %}
+                  {% if user in following.followers.all %}
+                    <button class='btn btn-outline-primary btn-sm'>팔로잉</button>
+                  {% else %}
+                    <button class='btn btn-primary btn-sm'>팔로우</button>
+                  {% endif %}
+                </form>
+              {% endif %} 
+            </div>
+          </div>
+          <br>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

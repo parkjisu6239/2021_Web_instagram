@@ -1,0 +1,59 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% bootstrap_css %}
+  <script src="https://kit.fontawesome.com/60069db2d9.js" crossorigin="anonymous"></script>
+  <title>Document</title>
+</head>
+<body class='bg-light'>
+  <br>
+  <br>
+  <div class="container">
+    <div class='d-flex flex-column align-items-center'>
+      <div class="card text-center" style="width: 35rem;">
+        <div class="card-body m-3">
+          <div class="container">
+            <h2 class="fw-bold card-title">Instagramgram</h2>
+            <br>
+            <p class='text-secondary m-0'>친구들의 사진과 동영상을 보려면 가입하세요.</p>
+            <button class='mt-3 container-fluid btn btn-primary'><i class="fab fa-facebook-square text-white"></i>   Facebook으로 로그인</button>
+            <br>
+            <br>
+            <div class='text-center text-secondary'>
+              <small class="text-decoration-line-through"><span class='text-white'>--------------------------------</span></small>
+              <small class="invisible">공</small>
+              <small> 또는 </small>
+              <small class="invisible">공</small>
+              <small class="text-decoration-line-through"><span class='text-white'>--------------------------------</span></small>
+            </div>
+            <br>
+            <form action="" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% bootstrap_form form %}  
+              <button class='mt-3 container-fluid btn btn-primary'>가입</button>
+            </form>
+            <br>
+            <small>가입하면 인스타그램그램의 약관을 따르게 되고 아무 지장도 없습니다~</small>
+          </div>
+        </div>
+      </div>
+      <div class="card text-center mt-3" style="width: 35rem;">
+        <div class="card-body mx-3">
+          <div class="container">
+            <p class='m-0'>계정이 있으신가요? <a class='fw-bold text-decoration-none' href="{% url 'accounts:login' %}">로그인</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% bootstrap_javascript %}
+</body>
+</html>
+
+
+
+

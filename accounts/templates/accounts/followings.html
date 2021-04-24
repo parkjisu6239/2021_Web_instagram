@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ person.username}}님의 팔로잉 리스트</h1>
+
+{% for following in person.followings.all %}{% endfor %}
+<p>{{ following }}</p>  
+
+
+{% endblock %}
